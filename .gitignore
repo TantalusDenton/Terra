@@ -15,6 +15,13 @@
 **/.vinext/
 **/dist/
 **/build/
+!web/build/
+/web/build/*
+!web/build/sites-vite-plugin.ts
+!web/build/sites-vite-plugin.LICENSE
+!web/build/sites-worker.ts
+!web/build/connector-preview-plugin.mjs
+!web/build/connector-preview-worker.mjs
 **/*.tsbuildinfo
 **/*.log
 

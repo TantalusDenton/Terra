@@ -34,10 +34,10 @@ core checks are:
 # Contracts
 cd web/chain
 npm ci
-npm test -- --no-compile
+npm test
 
 # Web app
-cd ../..
+cd ..
 npm ci
 npm test
 npm run typecheck
@@ -53,6 +53,11 @@ cd ../operator
 npm ci
 node --test tests/*.test.mjs
 ```
+
+Frontend commands automatically prepare ignored, undeployed local configuration
+for a fresh checkout. They preserve existing deployment files and trust anchors.
+Database-backed service commands require `DATABASE_URL` or the same
+`TERRA_POSTGRES_PASSWORD` supplied to Compose; unit tests do not require a database.
 
 The optional live infrastructure profile requires Docker and the documented
 Linux/WSL setup; it is not required for Windows-native contract, web, or service

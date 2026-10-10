@@ -17,15 +17,29 @@ review the recovery guidance before changing or restarting it.
 | Check | Result |
 | --- | --- |
 | Hardhat contract suites | 49 passing |
-| Web validation, multichain, and transport tests | 21 passing |
-| Ledger service unit tests | 13 passing |
-| Actual PostgreSQL integration tests | 3 passing |
-| Operator checkpoint/genesis/inspection/process tests | 13 passing |
+| Web validation, multichain, transport, and configuration tests | 23 passing |
+| Ledger service unit tests | 17 passing |
+| Actual PostgreSQL integration tests | 3 passing in earlier container verification; not rerun here |
+| Operator checkpoint/genesis/inspection/process tests | 11 passing |
 | Web and service TypeScript checks | Passing |
 | Sites/Vinext production build | Passing |
 | Live ledger API before/after PostgreSQL container restart | HTTP 200; service stayed running |
 | Preserved settlement identity via live RPC | Chain 3151908; original block-zero hash confirmed |
 | Original crest vs web asset | Identical SHA256 |
+
+The Windows-native continuation verified the frontend TypeScript check and full
+Sites/Vinext production build from an isolated copy containing only publishable
+source. Dependencies were reused through local directory junctions; no dependency
+installation, Linux launcher, Docker, database, or blockchain startup was needed.
+Missing deployment/anchor/hosting configuration was generated from safe defaults,
+with transactions disabled. Unit checks confirm existing deployment, root trust,
+and Site identity files are never overwritten during preparation.
+
+The API and Compose now use the same caller-provided PostgreSQL password, with
+URL escaping and an explicit configuration error when credentials are absent.
+Service unit tests and typechecking remain independent of database credentials.
+The Linux bootstrap now selects the pinned Optimism revision on a new clone; its
+live execution remains part of the infrastructure gate.
 
 Contract checks cover both Terra and Blockshares permanent membership, exact
 contributions, snapshots, voting outcomes, payload integrity, treasury accounting,
@@ -114,7 +128,7 @@ Two regression tests cover the exact roots, mismatch rejection, and binding of
 the parsed header to the raw SSZ prefix. The v7.1.0 image has been fetched by
 digest, and audited compatibility patch v4 (40 source files) uses a versioned
 subdirectory inside the original beacon volume. The failed v8 database, Geth
-ledger, and original genesis remain intact. The v7 live retry is in progress;
+ledger, and original genesis remain intact. The v7 retry reached client startup;
 header compatibility alone is not a successful live network smoke test. The first
 v7 retry stopped earlier because the retained logs collector was stopped after
 the Docker/control-plane restart. It was restored without replacing its container.
@@ -122,7 +136,11 @@ Kurtosis left the temporary validator utility in an unsupported `REGISTERED`
 status. An isolated, volume-free placeholder and the documented Starlark
 `remove_service` API cleared exactly that stale registration. The removal was
 confirmed by the supported enclave inspection; the Geth ledger and genesis
-artifacts remain retained. A subsequent v7 startup retry is in progress.
+artifacts remain retained. A subsequent v7 startup started consensus and 64
+validators, but its startup wait timed out with execution still at block zero and
+no advancing safe/finalized execution blocks. CPU-heavy empty-slot catch-up and
+validator request/database timeouts were observed. Timeout/thread adjustments
+were added, but their live retry has not been verified.
 Collector readiness now has a regression-tested preflight: stopped, ambiguous,
 foreign, and failed collector queries cannot proceed to service mutation.
 

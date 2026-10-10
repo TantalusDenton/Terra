@@ -1,0 +1,13 @@
+{
+  "status": "undeployed",
+  "network": "Hardhat local Terra",
+  "chainId": 31337,
+  "rpcUrl": "http://127.0.0.1:8545",
+  "explorerUrl": "",
+  "registry": "",
+  "governor": "",
+  "deploymentBlock": "0",
+  "transactionHash": "",
+  "governorCodeHash": "",
+  "registryCodeHash": ""
+}

@@ -12,6 +12,9 @@
     "start": "node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --local --persist-to .wrangler/state --ip 127.0.0.1 --inspector-port 0",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit",
+    "pretypecheck": "node scripts/prepare-client-config.mjs",
+    "prepare:config": "node scripts/prepare-client-config.mjs",
+    "pretest": "node scripts/prepare-client-config.mjs",
     "test": "node --import ./chain/node_modules/tsx/dist/loader.mjs --test tests/*.test.ts",
     "db:generate": "drizzle-kit generate"
   },

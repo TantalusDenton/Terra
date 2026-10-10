@@ -13,7 +13,8 @@ if [ ! -x "$TASK_ROOT/bin/kurtosis" ]; then
   tar -xzf "$TASK_ROOT/downloads/$ARCHIVE" -C "$TASK_ROOT/bin" kurtosis
 fi
 if [ ! -d "$TASK_ROOT/vendor/optimism-package/.git" ]; then
-  git clone --filter=blob:none https://github.com/ethpandaops/optimism-package.git "$TASK_ROOT/vendor/optimism-package"
+  git -c core.autocrlf=false clone --filter=blob:none https://github.com/ethpandaops/optimism-package.git "$TASK_ROOT/vendor/optimism-package"
+  git -C "$TASK_ROOT/vendor/optimism-package" checkout --detach "$COMMIT"
 fi
 CURRENT="$(git -C "$TASK_ROOT/vendor/optimism-package" rev-parse HEAD)"
 if [ "$CURRENT" != "$COMMIT" ]; then

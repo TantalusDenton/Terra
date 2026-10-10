@@ -6,6 +6,14 @@ The browser reads bounded proposal pages from this service. Blockchain contracts
 
 From the `services` directory, set a local `TERRA_POSTGRES_PASSWORD`, then run `npm install`, `npm run postgres:up`, wait for the `terra-blockshares-postgres` container to be healthy, and run `npm run dev`. PostgreSQL 17.6 is digest-pinned and uses a persistent named volume. The service binds `127.0.0.1:5190`, and the database binds `127.0.0.1:55432`. Production should inject `DATABASE_URL` and use independently managed databases and credentials.
 
+Export `TERRA_POSTGRES_PASSWORD` into the shell used for both Compose and the API.
+The API URL-encodes that password; `DATABASE_URL`, when supplied, takes precedence.
+Database commands report a configuration error if neither setting is supplied.
+An existing PostgreSQL volume retains its original password, so the supplied
+value must match that database; changing an environment variable does not rotate
+its credentials. Unit tests and TypeScript checks do not need database credentials
+or a running PostgreSQL service.
+
 `TERRA_MANIFEST` selects the operator's public manifest. Otherwise the service first reads `services/runtime/manifest.json` and falls back to the existing Hardhat deployment. A version 2 manifest supplies `communities` with decimal-string chain IDs and governance addresses. An active OP Stack community uses `finalized` by default; only the legacy Hardhat profile defaults to `latest`. Unsupported finality tags produce a visible indexing error instead of silently reducing finality. The operator writes approved and provisioning communities into the same public manifest. Runtime object files, cursor secrets, and database contents are retained across service restarts.
 
 ## HTTP API

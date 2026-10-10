@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { randomBytes } from 'node:crypto';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { databaseUrl, runtimePath, loadManifest, loadProtocol, loadNetworkSpec } from './config.js';
+import { getDatabaseUrl, runtimePath, loadManifest, loadProtocol, loadNetworkSpec } from './config.js';
 import { LedgerStore, StaticShardRouter } from './store.js';
 import { FileObjectStorage } from './objects.js';
 import { CursorCodec } from './cursor.js';
@@ -14,7 +14,7 @@ import { communityKey } from './types.js';
 import { failureReporter } from './runtime-health.js';
 
 const report = failureReporter(message => console.error(message));
-const pool = new Pool({connectionString:databaseUrl,max:8,connectionTimeoutMillis:5000,statement_timeout:15_000,query_timeout:20_000});
+const pool = new Pool({connectionString:getDatabaseUrl(),max:8,connectionTimeoutMillis:5000,statement_timeout:15_000,query_timeout:20_000});
 const shardConfiguration = process.env.TERRA_SHARDS ? JSON.parse(process.env.TERRA_SHARDS) as Record<string,string> : {};
 const pools = new Map([['local',pool],...Object.entries(shardConfiguration).map(([name,url]) => [name,new Pool({connectionString:url,max:8,connectionTimeoutMillis:5000,statement_timeout:15_000,query_timeout:20_000})] as const)]);
 // Idle pooled sockets can disconnect when Docker/PostgreSQL restarts. pg drops

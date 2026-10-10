@@ -12,12 +12,13 @@ import { LedgerStore, StaticShardRouter, type Checkpoint } from '../src/store.js
 import { FileObjectStorage } from '../src/objects.js';
 import { CommunityIndexer } from '../src/indexer.js';
 import { type ChainRpc, type ChainBlock, governanceEvents } from '../src/rpc.js';
-import { normalizeCommunity, databaseUrl } from '../src/config.js';
+import { normalizeCommunity, getDatabaseUrl } from '../src/config.js';
 import { communityKey, type IndexedEvent } from '../src/types.js';
 import { createApi, logoMessage } from '../src/api.js';
 import { CursorCodec } from '../src/cursor.js';
 
 const schema=`terra_test_${randomUUID().replaceAll('-','')}`;
+const databaseUrl=getDatabaseUrl();
 const admin=new Pool({connectionString:databaseUrl,max:1});
 let store: LedgerStore; let pool: Pool; let directory: string; let objects: FileObjectStorage;
 const address='0x0000000000000000000000000000000000000001' as Address;

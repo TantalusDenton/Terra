@@ -15,7 +15,7 @@ if (-not (Test-Path -LiteralPath "$taskRoot\bin\kurtosis.exe")) {
   if ($LASTEXITCODE -ne 0) { throw 'Kurtosis archive extraction failed.' }
 }
 if (-not (Test-Path -LiteralPath "$taskRoot\vendor\optimism-package\.git")) {
-  git clone --filter=blob:none https://github.com/ethpandaops/optimism-package.git "$taskRoot\vendor\optimism-package"
+  git -c core.autocrlf=false clone --filter=blob:none https://github.com/ethpandaops/optimism-package.git "$taskRoot\vendor\optimism-package"
   if ($LASTEXITCODE -ne 0) { throw 'Optimism package clone failed.' }
   git -C "$taskRoot\vendor\optimism-package" checkout $commit
 }

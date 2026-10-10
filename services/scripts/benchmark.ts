@@ -3,9 +3,10 @@ import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import { performance } from 'node:perf_hooks';
 import { LedgerStore, StaticShardRouter } from '../src/store.js';
-import { databaseUrl } from '../src/config.js';
+import { getDatabaseUrl } from '../src/config.js';
 
 const schema=`terra_benchmark_${randomUUID().replaceAll('-','')}`;
+const databaseUrl=getDatabaseUrl();
 const admin=new Pool({connectionString:databaseUrl,max:1});
 const key='31337:0x0000000000000000000000000000000000000001';
 let store:LedgerStore|undefined;

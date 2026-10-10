@@ -24,6 +24,13 @@ The UI charter's equal standing, expression, association, privacy, and due-proce
 
 Requirements: Node.js >=22.13 and npm. Hardhat 3 uses Solidity 0.8.35 and OpenZeppelin 5.6.1. The frontend uses the Sites/Vinext starter, TypeScript, wagmi, and viem.
 
+A fresh checkout has no deployment, root trust anchor, or Sites identity. App
+startup, builds, tests, and TypeScript checks create ignored local configuration
+from `config/` templates when those files are absent. Defaults have no deployed
+contracts and keep transactions disabled. Existing configuration is preserved
+byte for byte. `npm run prepare:config` prepares these files explicitly; normal
+deployment and verification tooling supplies the real addresses later.
+
 From this directory:
 
 ```powershell
@@ -52,7 +59,8 @@ Local transactions use chain ID **31337** and RPC **http://127.0.0.1:8545**. Wal
 `smoke:local` creates ephemeral local signers, registers citizenship, publishes and votes, advances only the local chain's time, executes from a noncitizen, verifies treasury payments, and checks duplicate voting/execution rejection. It refuses non-local networks. It writes local-only receipts in ignored `chain/local-verification.json`.
 
 Tests cover 49 contract cases for both organizations and the directory, plus 21
-frontend validation/multichain/transport cases. Local tests are not a professional
+frontend validation/multichain/transport cases, plus two configuration-preservation
+checks. Local tests are not a professional
 security audit. Live rollup, bridge, restart, and browser-wallet verification
 remain separate acceptance checks.
 

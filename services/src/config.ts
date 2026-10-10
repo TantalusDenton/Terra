@@ -6,7 +6,7 @@ import { decimal, type Community } from './types.js';
 
 export const root = resolve(import.meta.dirname, '..', '..');
 export const runtimePath = resolve(process.env.TERRA_RUNTIME ?? resolve(root, 'services/runtime'));
-export const databaseUrl = process.env.DATABASE_URL ?? 'postgresql://terra:terra-local-development@127.0.0.1:55432/terra';
+export { getDatabaseUrl } from './database-config.js';
 
 function address(value: unknown, label: string): Address | undefined {
   if (value === undefined || value === null || value === '') return undefined;

@@ -4,7 +4,9 @@ import { createPublicClient, createWalletClient, http, keccak256 } from "viem";
 import { baseSepolia, hardhat } from "viem/chains";
 import { loadDeployer } from "./deployer.mjs";
 import { exportAbis } from "./export.ts";
+import { prepareClientConfig } from "../../scripts/prepare-client-config.mjs";
 
+await prepareClientConfig();
 const connection = await network.create();
 const networkName = connection.networkName;
 const local = networkName === "localhost" || networkName === "hardhat";
