@@ -1,0 +1,28 @@
+{
+  "name": "terra-ledger-services",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:postgres": "tsx --test tests/postgres.integration.ts",
+    "db:migrate": "tsx src/migrate.ts",
+    "benchmark": "tsx scripts/benchmark.ts",
+    "postgres:up": "docker compose -f compose.yaml up -d"
+  },
+  "dependencies": {
+    "pg": "8.16.3",
+    "sharp": "0.35.4",
+    "viem": "2.57.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.19",
+    "@types/pg": "8.15.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

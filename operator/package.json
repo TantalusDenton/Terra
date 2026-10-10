@@ -1,0 +1,14 @@
+{
+  "name": "terra-blockshares-operator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "key:create": "node src/cli.mjs key:create",
+    "root:bootstrap": "node src/cli.mjs root:bootstrap",
+    "start": "node src/cli.mjs watch",
+    "once": "node src/cli.mjs once",
+    "journey": "node src/journey.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": { "viem": "2.57.4" }
+}

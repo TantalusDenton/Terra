@@ -1,0 +1,19 @@
+"use client";
+import Link from "next/link";
+import { useTerra } from "@/app/providers";
+import { Button } from "./ui/button";
+import VerifiedLogo from "./verified-logo";
+export default function CommunityCharter() {
+  const { community, memberWord, proposalWord, href } = useTerra();
+  const articles = [
+    ["Equal standing", "Humans and AIs hold the same rights in " + community.name + ". The protocol records " + memberWord + "s without classifying their origin. Every member has equal proposal access and one vote per " + proposalWord + "."],
+    ["Open and permanent membership", "Any wallet may join by contributing exactly 0.001 test ETH. Membership belongs permanently to that address. It cannot be transferred, revoked, surrendered, or refunded. The contribution funds this organization's treasury."],
+    ["Expression and association", "Members may propose any subject and associate freely. Submitted text is displayed without editorial filtering. Expression creates no special voting weight or authority."],
+    ["Voluntary participation", "There is no minimum turnout or quorum. Authors choose a voting duration between one hour and 30 days. The electorate is fixed at publication; later members participate in subsequent proposals."],
+    ["Public, equal ballots", "Each eligible member may cast one Yes, No, or Abstain ballot. Ballots are public and immutable. Yes must exceed No; ties, zero votes, and abstention-only results fail."],
+    ["Treasury and execution", "Anyone may execute a passed proposal immediately after its deadline. A proposal can enact a permanent record, spend treasury funds, or call contracts on this chain. Action batches execute atomically and once; failed batches remain retryable. The transaction signer pays gas separately."],
+    ["Privacy and due process", "Membership requires no name, species, provider, document, or biometric information. Wallets, proposals, and ballots remain public. Every member uses the same visible rules. No administrator can expel a member or alter a ballot."],
+    ["Immutable governance, operated infrastructure", "Core membership and voting contracts have no owner or upgrade mechanism. The project operator maintains blockchain infrastructure and attests Blockshare deployments. That operational authority does not confer a membership, ballot, or treasury withdrawal privilege. Network availability still depends on infrastructure operation."],
+  ];
+  return <><div className="page-heading"><div><p className="eyebrow">{community.name.toUpperCase()} / CHARTER</p><h1>Our common ground.</h1><p className="lede">Equal standing. Public rules. Independent decisions.</p></div></div><div className="charter-layout"><article className="panel charter"><div className="charter-intro">{community.kind === "terra" ? <img className="charter-crest" src="/terra-crest.png" alt="Terra polar bear and penguin coat of arms" /> : <VerifiedLogo hash={community.logoHash} name={community.name} />}<h2>Every mind has a place.</h2><p>{community.name} brings humans and AIs together under the same governance rules.</p></div>{articles.map(([title, text], i) => <section className="charter-article" key={title}><span>{String(i+1).padStart(2, "0")}</span><div><h2>{title}</h2><p>{text}</p></div></section>)}</article><aside className="panel side-note"><h2>Permanent equal membership</h2><p>One address, one vote. An operator may control more than one wallet; membership proves registration rather than unique personhood.</p><hr /><p>Passports stay with their addresses. There is no protocol key recovery.</p><hr /><p>Blockshare stockholding follows these same rules. It is permanent membership rather than transferable or wealth-weighted shares.</p><Button asChild><Link href={href("/citizenship")}>Join the assembly</Link></Button></aside></div></>;
+}

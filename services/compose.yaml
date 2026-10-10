@@ -1,0 +1,21 @@
+name: terra-blockshares-services
+services:
+  postgres:
+    image: postgres:17.6@sha256:00bc86618629af00d2937fdc5a5d63db3ff8450acf52f0636ec813c7f4902929
+    container_name: terra-blockshares-postgres
+    environment:
+      POSTGRES_DB: terra
+      POSTGRES_USER: terra
+      POSTGRES_PASSWORD: ${TERRA_POSTGRES_PASSWORD:?Set TERRA_POSTGRES_PASSWORD before starting PostgreSQL}
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - terra-blockshares-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U terra -d terra"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+volumes:
+  terra-blockshares-postgres:

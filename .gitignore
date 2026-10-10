@@ -1,0 +1,48 @@
+# Local workstation instructions and editor state
+/AGENTS.md
+**/.agents/
+**/.codex/
+**/.openai/
+**/.sites-runtime/
+**/.wrangler/
+
+# Dependencies, generated output, and test artifacts
+**/node_modules/
+**/artifacts/
+**/cache/
+**/coverage/
+**/.next/
+**/.vinext/
+**/dist/
+**/build/
+**/*.tsbuildinfo
+**/*.log
+
+# Secrets, local deployment state, and persistent service data
+**/.env
+**/.env.*
+!web/.env.example
+**/.terra-secrets/
+**/secrets/
+**/state/
+**/runtime/
+**/*.dpapi
+**/*.pem
+**/*.p12
+**/*.pfx
+**/*.keystore
+**/deployment.local.json
+**/local-verification.json
+**/verification.local.json
+/web/lib/deployment.json
+/web/lib/rollup-anchor.json
+/services/benchmark-result.json
+
+# Vendored checkouts and downloaded executable tooling
+/infra/rollups/vendor/
+/infra/rollups/bin/
+/infra/rollups/downloads/
+
+# Local-only safety adaptation (not part of Terra's product behavior)
+/operator/src/runtime-policy.mjs
+/operator/tests/runtime-policy.test.mjs
