@@ -19,7 +19,7 @@ async function proxy(request: Request, context: { params: Promise<{ path: string
     return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
   } catch (error) {
     if (error instanceof BodyTooLarge) return Response.json({ error: error.message }, { status: 413 });
-    return Response.json({ error: "The local indexed-ledger service is unavailable. Start Terra services and retry." }, { status: 503 });
+    return Response.json({ error: "The indexed ledger is temporarily unavailable. Please try again." }, { status: 503 });
   }
 }
 export const GET = proxy;

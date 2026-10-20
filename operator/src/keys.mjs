@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+import { azureKeyVaultEnabled, createAzureSigner, loadAzureSigner } from "./azure-key-vault.mjs";
 
 function protect(operation, input) {
   if (process.platform !== "win32") throw new Error("Operator keys require Windows DPAPI for the original Windows user.");
@@ -14,6 +15,7 @@ function protect(operation, input) {
 }
 
 export async function createKey(path) {
+  if (azureKeyVaultEnabled()) return createAzureSigner("operator");
   try { return await keyInfo(path); } catch (error) { if (error.code !== "ENOENT") throw error; }
   await mkdir(dirname(path), { recursive: true });
   const key = generatePrivateKey();
@@ -24,5 +26,11 @@ export async function createKey(path) {
   return publicInfo;
 }
 
-export async function keyInfo(path) { return JSON.parse(await readFile(`${path}.public.json`, "utf8")); }
-export async function loadKey(path) { return privateKeyToAccount(protect("unprotect", await readFile(path, "utf8"))); }
+export async function keyInfo(path) {
+  if (azureKeyVaultEnabled()) return { address: (await loadAzureSigner("operator")).address, protection: "Azure Key Vault via VM managed identity" };
+  return JSON.parse(await readFile(`${path}.public.json`, "utf8"));
+}
+export async function loadKey(path) {
+  if (azureKeyVaultEnabled()) return loadAzureSigner("operator");
+  return privateKeyToAccount(protect("unprotect", await readFile(path, "utf8")));
+}

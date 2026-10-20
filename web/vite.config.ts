@@ -37,6 +37,11 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async ({ command }) => {
+  const runtime = process.env.TERRA_WEB_RUNTIME ?? 'cloudflare';
+  if (!['cloudflare', 'node'].includes(runtime)) throw new Error('Unsupported Terra web runtime.');
+  if (runtime === 'node') {
+    return { plugins: [vinext(), sites({ mockAuth: false })] };
+  }
   // Use Miniflare's local Request.cf placeholder unless fetching is requested.
   process.env.CLOUDFLARE_CF_FETCH_ENABLED ??= "false";
   process.env.WRANGLER_SEND_METRICS ??= "false";

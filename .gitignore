@@ -2,6 +2,7 @@
 /AGENTS.md
 **/.agents/
 **/.codex/
+**/.azure/
 **/.openai/
 **/.sites-runtime/
 **/.wrangler/
@@ -49,6 +50,8 @@
 /infra/rollups/vendor/
 /infra/rollups/bin/
 /infra/rollups/downloads/
+/infra/azure/main.json
+/infra/azure/host.json
 
 # Local-only safety adaptation (not part of Terra's product behavior)
 /operator/src/runtime-policy.mjs

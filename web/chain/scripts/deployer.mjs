@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { createPublicClient, http, formatEther } from "viem";
 import { baseSepolia } from "viem/chains";
+import { azureKeyVaultEnabled } from "../../../operator/src/signer-backend.mjs";
 
 const directory = new URL("../../.terra-secrets/", import.meta.url);
 const publicPath = new URL("deployer-public.json", directory);
@@ -31,6 +32,7 @@ export async function loadDeployer() {
 }
 
 export async function loadProtectedSigner(label) {
+  if (azureKeyVaultEnabled()) return (await import("../../../operator/src/azure-key-vault.mjs")).loadAzureSigner(label);
   if (process.platform !== "win32")
     throw new Error(
       "This deployment key is protected for the original Windows user.",
@@ -44,6 +46,7 @@ export async function loadProtectedSigner(label) {
 }
 
 export async function createProtectedSigner(label = "deployer") {
+  if (azureKeyVaultEnabled()) return (await import("../../../operator/src/azure-key-vault.mjs")).createAzureSigner(label);
   const paths = signerPaths(label);
   if (process.platform !== "win32")
     throw new Error("Windows DPAPI is required.");
@@ -78,7 +81,9 @@ if (process.argv[1]?.endsWith("deployer.mjs")) {
   const command = process.argv[2];
   if (command === "create") console.log(JSON.stringify(await createProtectedSigner()));
   else if (command === "status") {
-    const info = JSON.parse(await readFile(publicPath, "utf8"));
+    const info = azureKeyVaultEnabled()
+      ? { address: (await loadProtectedSigner("deployer")).address, protection: "Azure Key Vault via VM managed identity" }
+      : JSON.parse(await readFile(publicPath, "utf8"));
     const client = createPublicClient({
       chain: baseSepolia,
       transport: http(process.env.TERRA_RPC_URL ?? "https://sepolia.base.org"),

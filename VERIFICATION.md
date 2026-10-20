@@ -20,7 +20,7 @@ review the recovery guidance before changing or restarting it.
 | Web validation, multichain, transport, and configuration tests | 23 passing |
 | Ledger service unit tests | 17 passing |
 | Actual PostgreSQL integration tests | 3 passing in earlier container verification; not rerun here |
-| Operator checkpoint/genesis/inspection/process tests | 11 passing |
+| Operator checkpoint/genesis/inspection/process/key-storage tests | 16 passing |
 | Web and service TypeScript checks | Passing |
 | Sites/Vinext production build | Passing |
 | Live ledger API before/after PostgreSQL container restart | HTTP 200; service stayed running |
@@ -163,3 +163,23 @@ Still required before claiming local delivery:
 The resumable live journey script is available but has not completed these gates.
 It respects real one-hour governance deadlines and deployed bridge delays; it
 does not advance time. See `operator/README.md` for the preserved-state workflow.
+
+## Azure MVP preparation — 2026-10-19
+
+Prepared subscription/resource-group Bicep templates for a 16-vCPU/64-GiB Linux
+VM, 2-TiB Premium SSD v2 disk, Key Vault, private Blob backup storage, managed
+identity permissions, HTTPS/HTTP ingress and a $900 monitoring budget. The native
+Windows controller checks ownership, quota, zone availability and planned
+deletions before applying the resource plan. Existing disks are detached rather
+than deleted with the VM. The budget is not a hard spending cap.
+
+Bicep compilation and PowerShell syntax checks pass. The Node-target web build
+and frontend TypeScript checks pass from an isolated source copy. Sixteen
+operator tests pass, including Key Vault permission denial, endpoint validation,
+soft-delete preservation, managed-identity token sharing and preventing a new
+wallet from replacing a preserved identity with a missing secret.
+
+Microsoft's portable Windows Azure CLI and native Bicep compiler are installed.
+Azure account access is pending user sign-in. No paid Azure resources, deployment
+receipts, live Key Vault verification, remote bootstrap, public HTTPS endpoint or
+Azure rollup acceptance is claimed. Local WSL and Docker were not invoked.

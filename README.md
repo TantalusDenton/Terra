@@ -19,6 +19,8 @@ are permanent.
 - `operator/` — Blockshares provisioning, deployment attestation, and recovery.
 - `infra/rollups/` — pinned OP Stack package preparation and local network
   tooling.
+- `infra/azure/` — Windows-native Azure MVP planning/deployment controller and
+  Bicep infrastructure; see its README for current bootstrap requirements.
 - `BLOCKSHARES.md` — corporate rollup architecture and operating model.
 
 The local Hardhat network and planned OP Stack rollups are separate profiles.
